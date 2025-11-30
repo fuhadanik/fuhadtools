@@ -5,6 +5,7 @@ const nextConfig = {
   env: {
     SESSION_SECRET: process.env.SESSION_SECRET,
   },
+  // Force rebuild with env vars
 }
 
 module.exports = nextConfig
