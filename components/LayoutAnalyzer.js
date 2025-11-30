@@ -3,6 +3,10 @@ import { useState } from 'react';
 export default function LayoutAnalyzer({ layoutData, fieldData, onClose }) {
   const [selectedLayout, setSelectedLayout] = useState(null);
 
+  // Debug logging
+  console.log('LayoutAnalyzer - layoutData:', layoutData);
+  console.log('LayoutAnalyzer - fieldData:', fieldData);
+
   if (!layoutData || !fieldData) {
     return (
       <div className="analyzer-empty">
@@ -24,6 +28,8 @@ export default function LayoutAnalyzer({ layoutData, fieldData, onClose }) {
   });
 
   const isFlexiPage = layoutData.type === 'FlexiPage';
+  console.log('Is FlexiPage:', isFlexiPage);
+  console.log('Layout sections:', layoutData.layoutSections);
 
   const renderStandardLayout = () => {
     const sections = layoutData.layoutSections || [];
@@ -208,31 +214,36 @@ export default function LayoutAnalyzer({ layoutData, fieldData, onClose }) {
         }
 
         .two-column-grid {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 20px;
+          display: grid !important;
+          grid-template-columns: 1fr 1fr !important;
+          gap: 20px !important;
+          width: 100%;
         }
 
         .one-column-grid {
           display: block;
+          width: 100%;
         }
 
         .layout-column {
-          display: flex;
-          flex-direction: column;
-          gap: 12px;
+          display: flex !important;
+          flex-direction: column !important;
+          gap: 12px !important;
+          width: 100%;
         }
 
         .field-box {
-          background: rgba(0, 255, 0, 0.03);
-          border: 2px solid #333;
-          padding: 12px;
+          background: rgba(0, 255, 0, 0.05);
+          border: 2px solid #444;
+          padding: 14px;
           border-radius: 6px;
           transition: all 0.2s;
-          min-height: 70px;
+          min-height: 75px;
           display: flex;
           flex-direction: column;
           justify-content: center;
+          box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
+          margin-bottom: 2px;
         }
 
         .field-box:hover {
