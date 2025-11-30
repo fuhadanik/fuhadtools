@@ -106,7 +106,7 @@ export default function DataParser({ fieldData, onClose }) {
           >
             Horizontal
           </button>
-          <button className="neon-button-small" onClick={onClose}>Close</button>
+          <button className="neon-button-small" onClick={onClose}>✕</button>
         </div>
       </div>
 
@@ -123,7 +123,7 @@ export default function DataParser({ fieldData, onClose }) {
           background: var(--card-bg);
           border: 1px solid var(--neon-cyan);
           padding: 20px;
-          max-height: 600px;
+          max-height: 90vh;
           overflow-y: auto;
         }
 
@@ -140,6 +140,7 @@ export default function DataParser({ fieldData, onClose }) {
           color: var(--neon-cyan);
           margin: 0;
           font-family: 'Orbitron', sans-serif;
+          font-size: 20px;
         }
 
         .parser-controls {
@@ -149,51 +150,66 @@ export default function DataParser({ fieldData, onClose }) {
         }
 
         .view-toggle {
-          padding: 6px 12px;
+          padding: 8px 16px;
           font-size: 12px;
           background: transparent;
           border: 1px solid #555;
           color: #888;
           cursor: pointer;
           transition: all 0.3s;
+          font-family: 'Orbitron', sans-serif;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
         }
 
         .view-toggle.active {
-          border-color: var(--neon-blue);
-          color: var(--neon-blue);
+          border-color: var(--neon-cyan);
+          color: var(--neon-cyan);
           background: rgba(0, 243, 255, 0.1);
+          box-shadow: 0 0 10px rgba(0, 243, 255, 0.2);
         }
 
         .view-toggle:hover {
-          border-color: var(--neon-blue);
+          border-color: var(--neon-cyan);
+          background: rgba(0, 243, 255, 0.05);
         }
 
         .neon-button-small {
-          padding: 6px 12px;
-          font-size: 12px;
           background: transparent;
-          border: 1px solid var(--neon-cyan);
-          color: var(--neon-cyan);
+          border: 1px solid #666;
+          color: #666;
+          font-size: 20px;
+          width: 35px;
+          height: 35px;
           cursor: pointer;
           transition: all 0.3s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
         }
 
         .neon-button-small:hover {
-          background: rgba(0, 255, 255, 0.1);
-          box-shadow: 0 0 10px rgba(0, 255, 255, 0.3);
+          border-color: var(--neon-pink);
+          color: var(--neon-pink);
+          box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
         }
 
         .parser-stats {
-          margin-bottom: 15px;
-          padding: 10px;
+          margin-bottom: 20px;
+          padding: 12px 15px;
           background: rgba(0, 255, 0, 0.05);
           border-left: 3px solid var(--neon-green);
           color: var(--neon-green);
           font-size: 14px;
+          font-weight: 600;
+          border-radius: 0 4px 4px 0;
         }
 
         .parser-content {
           overflow-x: auto;
+          overflow-y: auto;
+          max-height: calc(90vh - 180px);
         }
 
         .data-table {
@@ -205,47 +221,79 @@ export default function DataParser({ fieldData, onClose }) {
         .data-table th,
         .data-table td {
           border: 1px solid #333;
-          padding: 10px;
+          padding: 12px;
           text-align: left;
+          white-space: nowrap;
         }
 
         .data-table th {
-          background: rgba(0, 243, 255, 0.1);
-          color: var(--neon-blue);
-          font-weight: 600;
+          background: rgba(0, 243, 255, 0.15);
+          color: var(--neon-cyan);
+          font-weight: 700;
           position: sticky;
           top: 0;
           z-index: 10;
+          text-transform: uppercase;
+          font-size: 11px;
+          letter-spacing: 0.5px;
         }
 
         .data-table td {
           color: #ccc;
         }
 
-        .data-table tr:hover {
-          background: rgba(0, 255, 0, 0.05);
+        .data-table tbody tr:hover {
+          background: rgba(0, 255, 0, 0.08);
+          cursor: pointer;
         }
 
         .api-name {
           color: var(--neon-green);
-          font-family: monospace;
+          font-family: 'Courier New', monospace;
+          font-weight: 600;
         }
 
         .attribute-name {
           color: var(--neon-cyan);
-          font-weight: 600;
+          font-weight: 700;
+          position: sticky;
+          left: 0;
+          background: rgba(0, 0, 0, 0.95);
+          z-index: 5;
         }
 
         .data-table.horizontal {
-          display: block;
-          overflow-x: auto;
-          white-space: nowrap;
+          display: table;
         }
 
         .parser-empty {
           text-align: center;
-          padding: 40px;
+          padding: 60px 20px;
           color: #666;
+          font-size: 16px;
+        }
+
+        /* Scrollbar styling */
+        .parser-container::-webkit-scrollbar,
+        .parser-content::-webkit-scrollbar {
+          width: 8px;
+          height: 8px;
+        }
+
+        .parser-container::-webkit-scrollbar-track,
+        .parser-content::-webkit-scrollbar-track {
+          background: #000;
+        }
+
+        .parser-container::-webkit-scrollbar-thumb,
+        .parser-content::-webkit-scrollbar-thumb {
+          background: #333;
+          border-radius: 4px;
+        }
+
+        .parser-container::-webkit-scrollbar-thumb:hover,
+        .parser-content::-webkit-scrollbar-thumb:hover {
+          background: var(--neon-cyan);
         }
       `}</style>
     </div>
