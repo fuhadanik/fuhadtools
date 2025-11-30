@@ -9,7 +9,7 @@ export default function LayoutAnalyzer({ layoutData, fieldData, onClose }) {
 
   if (!layoutData || !fieldData) {
     return (
-      <div className="analyzer-empty">
+      <div style={{ textAlign: 'center', padding: '60px 20px', color: '#666', fontSize: '16px' }}>
         <p>No layout data available. Extract a layout first.</p>
       </div>
     );
@@ -31,6 +31,133 @@ export default function LayoutAnalyzer({ layoutData, fieldData, onClose }) {
   console.log('Is FlexiPage:', isFlexiPage);
   console.log('Layout sections:', layoutData.layoutSections);
 
+  // Styles
+  const styles = {
+    container: {
+      background: 'var(--card-bg)',
+      border: '1px solid var(--neon-green)',
+      padding: '20px',
+      maxHeight: '90vh',
+      overflowY: 'auto',
+    },
+    header: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '20px',
+      paddingBottom: '15px',
+      borderBottom: '1px solid #333',
+    },
+    title: {
+      color: 'var(--neon-green)',
+      margin: 0,
+      fontFamily: "'Orbitron', sans-serif",
+      fontSize: '20px',
+    },
+    closeBtn: {
+      background: 'transparent',
+      border: '1px solid #666',
+      color: '#666',
+      fontSize: '24px',
+      width: '35px',
+      height: '35px',
+      cursor: 'pointer',
+      transition: 'all 0.3s',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      padding: 0,
+    },
+    content: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '25px',
+    },
+    section: {
+      border: '1px solid #333',
+      padding: '20px',
+      background: 'rgba(0, 0, 0, 0.3)',
+      borderRadius: '4px',
+    },
+    sectionHeader: {
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      marginBottom: '20px',
+      paddingBottom: '12px',
+      borderBottom: '2px solid var(--neon-green)',
+    },
+    sectionTitle: {
+      color: 'var(--neon-blue)',
+      margin: 0,
+      fontSize: '18px',
+      fontWeight: 600,
+    },
+    sectionMode: {
+      fontSize: '12px',
+      color: 'var(--neon-cyan)',
+      padding: '4px 10px',
+      border: '1px solid var(--neon-cyan)',
+      borderRadius: '4px',
+      background: 'rgba(0, 243, 255, 0.05)',
+    },
+    twoColumnGrid: {
+      display: 'grid',
+      gridTemplateColumns: '1fr 1fr',
+      gap: '20px',
+      width: '100%',
+    },
+    oneColumnGrid: {
+      display: 'block',
+      width: '100%',
+    },
+    layoutColumn: {
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '12px',
+      width: '100%',
+    },
+    fieldBox: {
+      background: 'rgba(0, 255, 0, 0.05)',
+      border: '2px solid #444',
+      padding: '14px',
+      borderRadius: '6px',
+      transition: 'all 0.2s',
+      minHeight: '75px',
+      display: 'flex',
+      flexDirection: 'column',
+      justifyContent: 'center',
+      boxShadow: 'inset 0 0 10px rgba(0, 0, 0, 0.5)',
+      marginBottom: '2px',
+    },
+    fieldLabel: {
+      fontSize: '14px',
+      color: 'var(--neon-cyan)',
+      fontWeight: 600,
+      marginBottom: '5px',
+      display: 'flex',
+      alignItems: 'center',
+      gap: '5px',
+    },
+    required: {
+      color: 'var(--neon-pink)',
+      fontSize: '16px',
+      fontWeight: 'bold',
+    },
+    fieldApi: {
+      fontSize: '12px',
+      color: 'var(--neon-green)',
+      fontFamily: "'Courier New', monospace",
+      marginBottom: '4px',
+    },
+    fieldType: {
+      fontSize: '10px',
+      color: '#888',
+      textAlign: 'right',
+      fontStyle: 'italic',
+    },
+  };
+
   const renderStandardLayout = () => {
     const sections = layoutData.layoutSections || [];
 
@@ -47,15 +174,15 @@ export default function LayoutAnalyzer({ layoutData, fieldData, onClose }) {
       const layoutMode = isTwoColumn || columnCount === 2 ? '2 Column(s)' : '1 Column(s)';
 
       return (
-        <div key={idx} className="analyzer-section">
-          <div className="section-header">
-            <h3>{sectionName}</h3>
-            <span className="section-mode">{layoutMode}</span>
+        <div key={idx} style={styles.section}>
+          <div style={styles.sectionHeader}>
+            <h3 style={styles.sectionTitle}>{sectionName}</h3>
+            <span style={styles.sectionMode}>{layoutMode}</span>
           </div>
 
-          <div className={isTwoColumn || columnCount === 2 ? 'two-column-grid' : 'one-column-grid'}>
+          <div style={isTwoColumn || columnCount === 2 ? styles.twoColumnGrid : styles.oneColumnGrid}>
             {section.layoutColumns && section.layoutColumns.map((column, colIdx) => (
-              <div key={colIdx} className="layout-column">
+              <div key={colIdx} style={styles.layoutColumn}>
                 {column.layoutItems && column.layoutItems.map((item, itemIdx) => {
                   if (item.field) {
                     const fieldName = item.field;
@@ -63,13 +190,13 @@ export default function LayoutAnalyzer({ layoutData, fieldData, onClose }) {
                     const isRequired = meta.required || item.required;
 
                     return (
-                      <div key={itemIdx} className="field-box">
-                        <div className="field-label">
+                      <div key={itemIdx} style={styles.fieldBox}>
+                        <div style={styles.fieldLabel}>
                           {meta.label || fieldName}
-                          {isRequired && <span className="required-indicator">*</span>}
+                          {isRequired && <span style={styles.required}>*</span>}
                         </div>
-                        <div className="field-api">{fieldName}</div>
-                        <div className="field-type">{meta.type || 'Unknown'}</div>
+                        <div style={styles.fieldApi}>{fieldName}</div>
+                        <div style={styles.fieldType}>{meta.type || 'Unknown'}</div>
                       </div>
                     );
                   }
@@ -95,21 +222,21 @@ export default function LayoutAnalyzer({ layoutData, fieldData, onClose }) {
     });
 
     return Array.from(sectionMap.entries()).map(([sectionName, fields], idx) => (
-      <div key={idx} className="analyzer-section">
-        <div className="section-header">
-          <h3>{sectionName}</h3>
-          <span className="section-mode">FlexiPage</span>
+      <div key={idx} style={styles.section}>
+        <div style={styles.sectionHeader}>
+          <h3 style={styles.sectionTitle}>{sectionName}</h3>
+          <span style={styles.sectionMode}>FlexiPage</span>
         </div>
-        <div className="one-column-grid">
-          <div className="layout-column">
+        <div style={styles.oneColumnGrid}>
+          <div style={styles.layoutColumn}>
             {fields.map((field, fieldIdx) => (
-              <div key={fieldIdx} className="field-box">
-                <div className="field-label">
+              <div key={fieldIdx} style={styles.fieldBox}>
+                <div style={styles.fieldLabel}>
                   {field.label || field.apiName}
-                  {field.required && <span className="required-indicator">*</span>}
+                  {field.required && <span style={styles.required}>*</span>}
                 </div>
-                <div className="field-api">{field.apiName}</div>
-                <div className="field-type">{field.type}</div>
+                <div style={styles.fieldApi}>{field.apiName}</div>
+                <div style={styles.fieldType}>{field.type}</div>
               </div>
             ))}
           </div>
@@ -119,196 +246,15 @@ export default function LayoutAnalyzer({ layoutData, fieldData, onClose }) {
   };
 
   return (
-    <div className="analyzer-container">
-      <div className="analyzer-header">
-        <h2>Layout Analyzer</h2>
-        <button className="close-btn" onClick={onClose}>✕</button>
+    <div style={styles.container}>
+      <div style={styles.header}>
+        <h2 style={styles.title}>Layout Analyzer</h2>
+        <button style={styles.closeBtn} onClick={onClose}>✕</button>
       </div>
 
-      <div className="analyzer-content">
+      <div style={styles.content}>
         {isFlexiPage ? renderFlexiPage() : renderStandardLayout()}
       </div>
-
-      <style jsx>{`
-        .analyzer-container {
-          background: var(--card-bg);
-          border: 1px solid var(--neon-green);
-          padding: 20px;
-          max-height: 90vh;
-          overflow-y: auto;
-        }
-
-        .analyzer-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 20px;
-          padding-bottom: 15px;
-          border-bottom: 1px solid #333;
-        }
-
-        .analyzer-header h2 {
-          color: var(--neon-green);
-          margin: 0;
-          font-family: 'Orbitron', sans-serif;
-          font-size: 20px;
-        }
-
-        .close-btn {
-          background: transparent;
-          border: 1px solid #666;
-          color: #666;
-          font-size: 24px;
-          width: 35px;
-          height: 35px;
-          cursor: pointer;
-          transition: all 0.3s;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0;
-        }
-
-        .close-btn:hover {
-          border-color: var(--neon-pink);
-          color: var(--neon-pink);
-          box-shadow: 0 0 10px rgba(255, 0, 255, 0.3);
-        }
-
-        .analyzer-content {
-          display: flex;
-          flex-direction: column;
-          gap: 25px;
-        }
-
-        .analyzer-section {
-          border: 1px solid #333;
-          padding: 20px;
-          background: rgba(0, 0, 0, 0.3);
-          border-radius: 4px;
-        }
-
-        .section-header {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 20px;
-          padding-bottom: 12px;
-          border-bottom: 2px solid var(--neon-green);
-        }
-
-        .section-header h3 {
-          color: var(--neon-blue);
-          margin: 0;
-          font-size: 18px;
-          font-weight: 600;
-        }
-
-        .section-mode {
-          font-size: 12px;
-          color: var(--neon-cyan);
-          padding: 4px 10px;
-          border: 1px solid var(--neon-cyan);
-          border-radius: 4px;
-          background: rgba(0, 243, 255, 0.05);
-        }
-
-        .two-column-grid {
-          display: grid !important;
-          grid-template-columns: 1fr 1fr !important;
-          gap: 20px !important;
-          width: 100%;
-        }
-
-        .one-column-grid {
-          display: block;
-          width: 100%;
-        }
-
-        .layout-column {
-          display: flex !important;
-          flex-direction: column !important;
-          gap: 12px !important;
-          width: 100%;
-        }
-
-        .field-box {
-          background: rgba(0, 255, 0, 0.05);
-          border: 2px solid #444;
-          padding: 14px;
-          border-radius: 6px;
-          transition: all 0.2s;
-          min-height: 75px;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5);
-          margin-bottom: 2px;
-        }
-
-        .field-box:hover {
-          border-color: var(--neon-green);
-          background: rgba(0, 255, 0, 0.08);
-          box-shadow: 0 0 10px rgba(0, 255, 0, 0.2);
-          transform: translateY(-2px);
-        }
-
-        .field-label {
-          font-size: 14px;
-          color: var(--neon-cyan);
-          font-weight: 600;
-          margin-bottom: 5px;
-          display: flex;
-          align-items: center;
-          gap: 5px;
-        }
-
-        .required-indicator {
-          color: var(--neon-pink);
-          font-size: 16px;
-          font-weight: bold;
-        }
-
-        .field-api {
-          font-size: 12px;
-          color: var(--neon-green);
-          font-family: 'Courier New', monospace;
-          margin-bottom: 4px;
-        }
-
-        .field-type {
-          font-size: 10px;
-          color: #888;
-          text-align: right;
-          font-style: italic;
-        }
-
-        .analyzer-empty {
-          text-align: center;
-          padding: 60px 20px;
-          color: #666;
-          font-size: 16px;
-        }
-
-        /* Scrollbar styling */
-        .analyzer-container::-webkit-scrollbar {
-          width: 8px;
-        }
-
-        .analyzer-container::-webkit-scrollbar-track {
-          background: #000;
-        }
-
-        .analyzer-container::-webkit-scrollbar-thumb {
-          background: #333;
-          border-radius: 4px;
-        }
-
-        .analyzer-container::-webkit-scrollbar-thumb:hover {
-          background: var(--neon-green);
-        }
-      `}</style>
     </div>
   );
 }
-
