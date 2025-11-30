@@ -1,0 +1,333 @@
+/* Import Cyberpunk Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&family=Rajdhani:wght@300;400;500;600;700&display=swap');
+
+/* CSS Variables for Cyberpunk Theme */
+:root {
+  --neon-pink: #ff00ff;
+  --neon-cyan: #00ffff;
+  --neon-green: #00ff00;
+  --neon-blue: #0080ff;
+  --neon-purple: #8000ff;
+  --dark-bg: #000000;
+  --dark-surface: #0a0a0a;
+  --dark-elevated: #1a1a1a;
+  --text-primary: #ffffff;
+  --text-secondary: #00ffff;
+  --border-glow: #00ffff;
+}
+
+/* Reset and Base Styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  font-family: 'Rajdhani', sans-serif;
+  background: var(--dark-bg);
+  color: var(--text-primary);
+  overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Cyberpunk Background Animation */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    linear-gradient(45deg, transparent 30%, rgba(0, 255, 255, 0.02) 30%, rgba(0, 255, 255, 0.02) 70%, transparent 70%),
+    linear-gradient(-45deg, transparent 30%, rgba(255, 0, 255, 0.02) 30%, rgba(255, 0, 255, 0.02) 70%, transparent 70%);
+  background-size: 100px 100px;
+  animation: scanlines 10s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes scanlines {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 100px 100px;
+  }
+}
+
+/* Main Container */
+#__next {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+/* Headings */
+h1 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 3rem;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  background: linear-gradient(90deg, var(--neon-cyan), var(--neon-pink));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+  margin-bottom: 1rem;
+}
+
+h2 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 1rem;
+}
+
+h3 {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--neon-green);
+  margin-bottom: 0.5rem;
+}
+
+/* Neon Button */
+.neon-button {
+  font-family: 'Orbitron', sans-serif;
+  background: transparent;
+  border: 2px solid var(--neon-cyan);
+  color: var(--neon-cyan);
+  padding: 12px 30px;
+  font-size: 1rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 0 10px var(--neon-cyan),
+    inset 0 0 10px rgba(0, 255, 255, 0.1);
+}
+
+.neon-button:hover {
+  background: rgba(0, 255, 255, 0.1);
+  box-shadow:
+    0 0 20px var(--neon-cyan),
+    0 0 40px var(--neon-cyan),
+    inset 0 0 20px rgba(0, 255, 255, 0.2);
+  transform: translateY(-2px);
+}
+
+.neon-button:active {
+  transform: translateY(0);
+}
+
+.neon-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* Neon Input */
+.neon-input {
+  font-family: 'Rajdhani', sans-serif;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid var(--neon-cyan);
+  color: var(--text-primary);
+  padding: 12px 20px;
+  font-size: 1rem;
+  width: 100%;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 0 5px rgba(0, 255, 255, 0.3),
+    inset 0 0 10px rgba(0, 255, 255, 0.05);
+}
+
+.neon-input:focus {
+  outline: none;
+  border-color: var(--neon-pink);
+  box-shadow:
+    0 0 20px var(--neon-pink),
+    inset 0 0 20px rgba(255, 0, 255, 0.1);
+}
+
+.neon-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+}
+
+/* Neon Select */
+.neon-select {
+  font-family: 'Rajdhani', sans-serif;
+  background: rgba(0, 0, 0, 0.8);
+  border: 2px solid var(--neon-cyan);
+  color: var(--text-primary);
+  padding: 12px 20px;
+  font-size: 1rem;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow:
+    0 0 5px rgba(0, 255, 255, 0.3),
+    inset 0 0 10px rgba(0, 255, 255, 0.05);
+}
+
+.neon-select:focus {
+  outline: none;
+  border-color: var(--neon-pink);
+  box-shadow:
+    0 0 20px var(--neon-pink),
+    inset 0 0 20px rgba(255, 0, 255, 0.1);
+}
+
+/* Neon Card */
+.neon-card {
+  background: rgba(10, 10, 10, 0.9);
+  border: 2px solid var(--neon-cyan);
+  padding: 30px;
+  position: relative;
+  box-shadow:
+    0 0 20px rgba(0, 255, 255, 0.2),
+    inset 0 0 30px rgba(0, 255, 255, 0.05);
+}
+
+.neon-card::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, var(--neon-cyan), var(--neon-pink), var(--neon-cyan));
+  z-index: -1;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  filter: blur(10px);
+}
+
+.neon-card:hover::before {
+  opacity: 0.3;
+}
+
+/* Loading Spinner */
+.loading-spinner {
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: 4px solid rgba(0, 255, 255, 0.3);
+  border-top-color: var(--neon-cyan);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error Message */
+.error-message {
+  background: rgba(255, 0, 0, 0.1);
+  border: 2px solid #ff0000;
+  color: #ff6666;
+  padding: 15px;
+  margin: 15px 0;
+  box-shadow: 0 0 20px rgba(255, 0, 0, 0.3);
+  font-family: 'Rajdhani', sans-serif;
+}
+
+/* Success Message */
+.success-message {
+  background: rgba(0, 255, 0, 0.1);
+  border: 2px solid var(--neon-green);
+  color: var(--neon-green);
+  padding: 15px;
+  margin: 15px 0;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+  font-family: 'Rajdhani', sans-serif;
+}
+
+/* Form Group */
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.9rem;
+  color: var(--neon-cyan);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 8px;
+}
+
+/* Glitch Effect */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -2px 0 var(--neon-pink);
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch-anim 3s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -2px 0 var(--neon-cyan);
+  clip: rect(85px, 550px, 140px, 0);
+  animation: glitch-anim 2s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim {
+  0% {
+    clip: rect(61px, 9999px, 70px, 0);
+  }
+  20% {
+    clip: rect(89px, 9999px, 35px, 0);
+  }
+  40% {
+    clip: rect(2px, 9999px, 88px, 0);
+  }
+  60% {
+    clip: rect(46px, 9999px, 99px, 0);
+  }
+  80% {
+    clip: rect(25px, 9999px, 14px, 0);
+  }
+  100% {
+    clip: rect(70px, 9999px, 61px, 0);
+  }
+}
+
+/* Utilities */
+.text-center {
+  text-align: center;
+}
+
+.mt-1 { margin-top: 10px; }
+.mt-2 { margin-top: 20px; }
+.mt-3 { margin-top: 30px; }
+
+.mb-1 { margin-bottom: 10px; }
+.mb-2 { margin-bottom: 20px; }
+.mb-3 { margin-bottom: 30px; }
