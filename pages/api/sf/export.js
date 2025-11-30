@@ -40,37 +40,33 @@ async function handler(req, res) {
   const sfClient = new SalesforceClient(session.instanceUrl, session.sid);
 
   try {
-    // Get object describe metadata
+    // Get object describe metadata (contains all fields)
     const describe = await sfClient.describeObject(object);
 
-    let fields = [];
-
-    if (layoutType === 'Layout') {
-      // Get layout metadata
-      const layoutMetadata = await sfClient.getLayoutMetadata(object, layoutId);
-
-      // Parse layout and extract fields
-      fields = parseLayoutMetadata(layoutMetadata, describe);
-
-    } else if (layoutType === 'FlexiPage') {
-      // Get FlexiPage metadata
-      const flexiPageMetadata = await sfClient.getFlexiPageMetadata(layoutId);
-
-      // Parse FlexiPage and extract fields
-      fields = parseFlexiPageMetadata(flexiPageMetadata, describe);
-
-    } else {
-      return res.status(400).json({
-        error: 'Invalid layout type',
-        message: 'layoutType must be either "Layout" or "FlexiPage"',
-      });
-    }
+    // Extract all fields with their metadata
+    const fields = describe.fields.map(field => ({
+      section: 'All Fields',
+      apiName: field.name,
+      label: field.label,
+      type: field.type,
+      length: field.length || '',
+      precision: field.precision || '',
+      scale: field.scale || '',
+      required: !field.nillable,
+      readOnly: !field.updateable,
+      picklistValues: field.picklistValues
+        ? field.picklistValues.map(pv => pv.value).join('; ')
+        : '',
+      helpText: field.inlineHelpText || '',
+      referenceTo: field.referenceTo ? field.referenceTo.join(', ') : '',
+      defaultValue: field.defaultValue || '',
+    }));
 
     // Generate CSV
     const csv = generateTransposedCsv(fields);
 
     // Set headers for file download
-    const filename = `${object}_${layoutType}_layout.csv`;
+    const filename = `${object}_fields.csv`;
     res.setHeader('Content-Type', 'text/csv');
     res.setHeader('Content-Disposition', `attachment; filename="${filename}"`);
 
