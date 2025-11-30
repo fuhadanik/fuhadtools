@@ -10,6 +10,8 @@ export default function MainApp({ firebaseUser }) {
 
   // Data state
   const [objects, setObjects] = useState([]);
+  const [filteredObjects, setFilteredObjects] = useState([]);
+  const [objectSearch, setObjectSearch] = useState('');
   const [selectedObject, setSelectedObject] = useState('');
   const [layouts, setLayouts] = useState([]);
   const [selectedLayout, setSelectedLayout] = useState('');
@@ -84,12 +86,27 @@ export default function MainApp({ firebaseUser }) {
       }
 
       setObjects(data);
+      setFilteredObjects(data);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
   };
+
+  // Filter objects based on search
+  useEffect(() => {
+    if (!objectSearch) {
+      setFilteredObjects(objects);
+    } else {
+      const search = objectSearch.toLowerCase();
+      const filtered = objects.filter(obj =>
+        obj.name.toLowerCase().includes(search) ||
+        obj.label.toLowerCase().includes(search)
+      );
+      setFilteredObjects(filtered);
+    }
+  }, [objectSearch, objects]);
 
   // Load layouts when object is selected
   const handleObjectSelect = async (objectName) => {
@@ -247,13 +264,24 @@ export default function MainApp({ firebaseUser }) {
             <div className="neon-card mb-3">
               <h2>Select Object</h2>
               <div className="form-group">
+                <label>Search Objects</label>
+                <input
+                  type="text"
+                  className="neon-input"
+                  value={objectSearch}
+                  onChange={(e) => setObjectSearch(e.target.value)}
+                  placeholder="Search by name or label (e.g., Account, Contact)"
+                  style={{ marginBottom: '10px' }}
+                />
+              </div>
+              <div className="form-group">
                 <select
                   className="neon-select"
                   value={selectedObject}
                   onChange={(e) => handleObjectSelect(e.target.value)}
                 >
-                  <option value="">-- Select Object --</option>
-                  {objects.map((obj) => (
+                  <option value="">-- Select Object ({filteredObjects.length} found) --</option>
+                  {filteredObjects.map((obj) => (
                     <option key={obj.name} value={obj.name}>
                       {obj.label} ({obj.name})
                     </option>
