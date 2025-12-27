@@ -8,14 +8,47 @@ export default function MainApp() {
   // Theme state
   const [darkMode, setDarkMode] = useState(false);
 
-  // Initialize dark mode from localStorage
+  // Initialize theme and restore session from storage
   useEffect(() => {
+    // Restore theme
     const savedTheme = localStorage.getItem('sf-tools-theme');
     if (savedTheme === 'dark') {
       setDarkMode(true);
       document.documentElement.classList.add('dark');
     }
+
+    // Restore session from sessionStorage
+    const savedSession = sessionStorage.getItem('cloudforge-session');
+    if (savedSession) {
+      try {
+        const session = JSON.parse(savedSession);
+        if (session.instanceUrl && session.sid) {
+          setInstanceUrl(session.instanceUrl);
+          setSid(session.sid);
+          setSessionActive(true);
+          if (session.activePage) {
+            setActivePage(session.activePage);
+          }
+        }
+      } catch (e) {
+        console.error('Failed to restore session:', e);
+      }
+    }
   }, []);
+
+  // Save active page to session when it changes
+  useEffect(() => {
+    const savedSession = sessionStorage.getItem('cloudforge-session');
+    if (savedSession) {
+      try {
+        const session = JSON.parse(savedSession);
+        session.activePage = activePage;
+        sessionStorage.setItem('cloudforge-session', JSON.stringify(session));
+      } catch (e) {
+        // Ignore
+      }
+    }
+  }, [activePage]);
 
   // Toggle dark mode
   const toggleDarkMode = () => {
@@ -181,6 +214,13 @@ export default function MainApp() {
 
       setSplashMessage('Loading your data...');
       await new Promise(resolve => setTimeout(resolve, 1500));
+
+      // Save session to sessionStorage for persistence on reload
+      sessionStorage.setItem('cloudforge-session', JSON.stringify({
+        instanceUrl,
+        sid,
+        activePage: 'extractor'
+      }));
 
       setSessionActive(true);
       setSuccess('Connected to Salesforce!');
@@ -508,6 +548,9 @@ export default function MainApp() {
 
   // Disconnect session
   const handleDisconnect = () => {
+    // Clear session from storage
+    sessionStorage.removeItem('cloudforge-session');
+
     setSessionActive(false);
     setInstanceUrl('');
     setSid('');
