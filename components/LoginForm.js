@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '@/lib/firebase';
 
 export default function LoginForm({ onLoginSuccess }) {
@@ -15,21 +15,6 @@ export default function LoginForm({ onLoginSuccess }) {
 
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      onLoginSuccess();
-    } catch (err) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleGoogleLogin = async () => {
-    setLoading(true);
-    setError('');
-
-    try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(auth, provider);
       onLoginSuccess();
     } catch (err) {
       setError(err.message);
@@ -96,31 +81,36 @@ export default function LoginForm({ onLoginSuccess }) {
         </form>
 
         <div style={{
+          marginTop: '40px',
           textAlign: 'center',
-          margin: '20px 0',
-          color: 'var(--neon-cyan)',
-          fontSize: '0.9rem'
+          borderTop: '1px solid rgba(255, 255, 255, 0.1)',
+          paddingTop: '24px'
         }}>
-          — OR —
+          <p style={{
+            color: 'rgba(255, 255, 255, 0.5)',
+            fontSize: '0.8rem',
+            marginBottom: '8px'
+          }}>
+            Created by
+          </p>
+          <p style={{
+            background: 'linear-gradient(135deg, #60a5fa 0%, #a78bfa 50%, #f472b6 100%)',
+            WebkitBackgroundClip: 'text',
+            WebkitTextFillColor: 'transparent',
+            backgroundClip: 'text',
+            fontSize: '1.1rem',
+            fontWeight: '700',
+            marginBottom: '12px'
+          }}>
+            Fuhad Hossain
+          </p>
+          <p style={{
+            color: 'rgba(255, 255, 255, 0.4)',
+            fontSize: '0.7rem'
+          }}>
+            &copy; {new Date().getFullYear()} All rights reserved
+          </p>
         </div>
-
-        <button
-          onClick={handleGoogleLogin}
-          className="neon-button"
-          disabled={loading}
-          style={{ width: '100%' }}
-        >
-          {loading ? 'LOGGING IN...' : 'LOGIN WITH GOOGLE'}
-        </button>
-
-        <p style={{
-          marginTop: '30px',
-          textAlign: 'center',
-          color: 'rgba(255, 255, 255, 0.5)',
-          fontSize: '0.85rem'
-        }}>
-          Phase 1 MVP - Firebase Authentication Required
-        </p>
       </div>
     </div>
   );

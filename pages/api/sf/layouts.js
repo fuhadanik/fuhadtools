@@ -1,6 +1,6 @@
 import { SalesforceClient } from '@/lib/salesforce';
 import { getSessionFromRequest } from '@/lib/session';
-import { requireAuth, withErrorHandling, compose } from '@/lib/apiMiddleware';
+import { withErrorHandling } from '@/lib/apiMiddleware';
 
 /**
  * GET /api/sf/layouts?object=Account
@@ -39,4 +39,4 @@ async function handler(req, res) {
   return res.status(200).json(layouts);
 }
 
-export default compose(requireAuth, withErrorHandling)(handler);
+export default withErrorHandling(handler);

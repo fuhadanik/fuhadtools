@@ -1,6 +1,6 @@
 import { SalesforceClient } from '@/lib/salesforce';
 import { setSessionCookie, clearSessionCookie } from '@/lib/session';
-import { requireAuth, withErrorHandling, compose } from '@/lib/apiMiddleware';
+import { withErrorHandling } from '@/lib/apiMiddleware';
 
 /**
  * POST /api/login
@@ -66,5 +66,4 @@ async function handler(req, res) {
   }
 }
 
-// Apply middleware: require auth and error handling
-export default compose(requireAuth, withErrorHandling)(handler);
+export default withErrorHandling(handler);
