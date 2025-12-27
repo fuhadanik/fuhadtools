@@ -110,10 +110,28 @@ export default function MainApp() {
   const [success, setSuccess] = useState('');
   const [copySuccess, setCopySuccess] = useState(false);
 
-  // Splash screen state - show on initial load, stays until user clicks
-  const [showSplash, setShowSplash] = useState(true);
+  // Splash screen state - show only once per browser session
+  const [showSplash, setShowSplash] = useState(false);
   const [splashMessage, setSplashMessage] = useState('');
   const [isConnecting, setIsConnecting] = useState(false);
+
+  // Check if splash should show (only on first visit per session)
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const hasSeenSplash = sessionStorage.getItem('cloudforge-splash-seen');
+      if (!hasSeenSplash) {
+        setShowSplash(true);
+      }
+    }
+  }, []);
+
+  // Mark splash as seen when user clicks Launch App
+  const handleLaunchApp = () => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('cloudforge-splash-seen', 'true');
+    }
+    setShowSplash(false);
+  };
 
   // Filter objects based on search
   const filteredObjects = useMemo(() => {
@@ -2937,7 +2955,7 @@ export default function MainApp() {
 
         <button
           className="splash-enter-btn"
-          onClick={() => setShowSplash(false)}
+          onClick={handleLaunchApp}
         >
           <span>Launch App</span>
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
